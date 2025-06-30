@@ -84,11 +84,8 @@ class CustomSlidableAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveForegroundColor = foregroundColor ??
-        (ThemeData.estimateBrightnessForColor(backgroundColor) ==
-                Brightness.light
-            ? Colors.black
-            : Colors.white);
+    final effectiveForegroundColor =
+        foregroundColor ?? (ThemeData.estimateBrightnessForColor(backgroundColor) == Brightness.light ? Colors.black : Colors.white);
 
     return Expanded(
       flex: flex,
@@ -140,8 +137,10 @@ class SlidableAction extends StatelessWidget {
     this.autoClose = _kAutoClose,
     required this.onPressed,
     this.icon,
+    this.iconSize = 24.0,
     this.spacing = 4,
     this.label,
+    this.labelStyle,
     this.borderRadius = BorderRadius.zero,
     this.padding,
   })  : assert(flex > 0),
@@ -165,6 +164,9 @@ class SlidableAction extends StatelessWidget {
   /// An icon to display above the [label].
   final IconData? icon;
 
+  /// The size of the [icon] if set.
+  final double iconSize;
+
   /// The space between [icon] and [label] if both set.
   ///
   /// Defaults to 4.
@@ -172,6 +174,11 @@ class SlidableAction extends StatelessWidget {
 
   /// A label to display below the [icon].
   final String? label;
+
+  /// The style of the [label] if set.
+  ///
+  /// If null, the [label] will use the default text style of the current theme
+  final TextStyle? labelStyle;
 
   /// Padding of the OutlinedButton
   final BorderRadius borderRadius;
@@ -185,7 +192,10 @@ class SlidableAction extends StatelessWidget {
 
     if (icon != null) {
       children.add(
-        Icon(icon),
+        Icon(
+          icon,
+          size: iconSize,
+        ),
       );
     }
 
@@ -200,6 +210,11 @@ class SlidableAction extends StatelessWidget {
         Text(
           label!,
           overflow: TextOverflow.ellipsis,
+          style: labelStyle ??
+              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color:
+                        foregroundColor ?? (ThemeData.estimateBrightnessForColor(backgroundColor) == Brightness.light ? Colors.black : Colors.white),
+                  ),
         ),
       );
     }
